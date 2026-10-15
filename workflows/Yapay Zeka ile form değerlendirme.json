@@ -1,0 +1,228 @@
+{
+  "name": "Yapay Zeka ile form değerlendirme",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Review",
+        "formDescription": "How satisfied are you",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Name"
+            },
+            {
+              "fieldLabel": "Your review",
+              "fieldType": "textarea"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.6,
+      "position": [
+        0,
+        0
+      ],
+      "id": "46155cb7-3a12-4778-afb8-4fdafaec0241",
+      "name": "On form submission",
+      "webhookId": "e267893e-c201-4599-b0e2-5da8b3b5e12e"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json['Your review'] }}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=You are an expert in sentiment analysis.\nYou conduct evaluations and determine which of the three options applies:\n\nPositive\nNegative\nNeutral\nYou respond with only one word."
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        224,
+        96
+      ],
+      "id": "5a584056-f145-403a-ad38-aa6b306ade58",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        224,
+        304
+      ],
+      "id": "5f8f843f-04ec-4437-bcf9-7d583243ad56",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "xN7S1O0QUnEO67S3",
+          "name": "OpenAI account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        608,
+        16
+      ],
+      "id": "583351a4-e8f6-4a94-b4af-704d762b80ae",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "19ic5vTf1HbQLJJl3vFmxnVNBEJlsQa0Y3WhlJz3pxno",
+          "mode": "list",
+          "cachedResultName": "bu bir test",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/19ic5vTf1HbQLJJl3vFmxnVNBEJlsQa0Y3WhlJz3pxno/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sayfa1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/19ic5vTf1HbQLJJl3vFmxnVNBEJlsQa0Y3WhlJz3pxno/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "={{ $json.Name }}",
+            "Review": "= {{ $json.text }}"
+          },
+          "matchingColumns": [
+            "Name"
+          ],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Review",
+              "displayName": "Review",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        848,
+        16
+      ],
+      "id": "44699ff4-3e79-4c9d-9cc8-1ad1d0c74112",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "dzbw0IbrorZBxyQU",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "b523775d-8787-4f22-a7a5-c7f2c16717da",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "91070d136810fdb57b0cfd7434cc8dc7a5368a1e15acf4602ec4c73deec6e27c"
+  },
+  "nodeGroups": [],
+  "id": "VXLDVRXkHuqvSRsy",
+  "tags": []
+}

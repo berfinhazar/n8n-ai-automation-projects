@@ -1,0 +1,39 @@
+{
+  "name": "send mails pineconda bağla",
+  "nodes": [
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "420a835f-7e03-42a2-92cc-061c8b73b739",
+      "name": "When Executed by Another Workflow"
+    }
+  ],
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "json": {}
+      }
+    ]
+  },
+  "connections": {},
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "e29606a7-acb7-4e89-8c39-92ad89c76721",
+  "meta": {
+    "instanceId": "91070d136810fdb57b0cfd7434cc8dc7a5368a1e15acf4602ec4c73deec6e27c"
+  },
+  "nodeGroups": [],
+  "id": "eeHdUXF8n6XlxhW3",
+  "tags": []
+}
