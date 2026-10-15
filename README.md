@@ -1,6 +1,5 @@
 # n8n AI Automation Projects
 
-## Türkçe
 
 Bu depo, n8n ile yapay zekâ otomasyonu ve LLM destekli iş akışları üzerine yaptığım kurs çalışmaları ve uygulamalı projeleri içerir.
 
@@ -21,7 +20,6 @@ Bu depo, n8n ile yapay zekâ otomasyonu ve LLM destekli iş akışları üzerine
 3. Gerekli servisler için kendi kimlik bilgilerinizi (credentials) yapılandırın.
 4. Çalıştırmadan önce node ayarlarını ve bağlantıları kontrol edin.
 
-**Güvenlik:** API anahtarlarını, parolaları, erişim token'larını ve kişisel verileri GitHub'a yüklemeyin.
 
 ## English
 
@@ -44,7 +42,6 @@ This repository contains hands-on projects and coursework focused on AI automati
 3. Configure your own credentials for the required services.
 4. Review node settings and connections before execution.
 
-**Security:** Never commit API keys, passwords, access tokens, or personal data.
 
 ### Disclaimer
 
